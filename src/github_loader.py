@@ -110,16 +110,55 @@ class GitHubLoader:
             followers = followers_resp.json()
 
             for follower in followers:
-                db.execute("""
-                    MERGE (f:Developer {username: $follower_name})
-                    SET f.profile_url = $url
-                    WITH f
-                    MATCH (u:Developer {username: $target})
-                    MERGE (f)-[:FOLLOWS]->(u)
-                """,
-                    follower_name=follower["login"],
-                    url=follower["html_url"],
-                    target=username)
+                fname = follower["login"]
+
+                # Fetch follower's own profile for their follower count
+                try:
+                    prof_resp = self._fetch_with_retry(
+                        f"{self.api_base}/users/{fname}"
+                    )
+                    if prof_resp.status_code == 200:
+                        prof = prof_resp.json()
+                        db.execute("""
+                            MERGE (f:Developer {username: $follower_name})
+                            SET f.name = $name,
+                                f.followers = $followers,
+                                f.public_repos = $repos,
+                                f.profile_url = $url
+                            WITH f
+                            MATCH (u:Developer {username: $target})
+                            MERGE (f)-[:FOLLOWS]->(u)
+                        """,
+                            follower_name=fname,
+                            name=prof.get("name", fname),
+                            followers=prof.get("followers", 0),
+                            repos=prof.get("public_repos", 0),
+                            url=prof.get("html_url"),
+                            target=username)
+                    else:
+                        # Fallback: just set basic info
+                        db.execute("""
+                            MERGE (f:Developer {username: $follower_name})
+                            SET f.profile_url = $url
+                            WITH f
+                            MATCH (u:Developer {username: $target})
+                            MERGE (f)-[:FOLLOWS]->(u)
+                        """,
+                            follower_name=fname,
+                            url=follower["html_url"],
+                            target=username)
+                except Exception:
+                    # Fallback on error
+                    db.execute("""
+                        MERGE (f:Developer {username: $follower_name})
+                        SET f.profile_url = $url
+                        WITH f
+                        MATCH (u:Developer {username: $target})
+                        MERGE (f)-[:FOLLOWS]->(u)
+                    """,
+                        follower_name=fname,
+                        url=follower["html_url"],
+                        target=username)
 
             logger.info(f"Loaded {len(followers)} followers for {username}")
 
