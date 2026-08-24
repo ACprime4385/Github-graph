@@ -43,8 +43,8 @@
                 <span class="brand-text">DevGraph</span>
             </div>
             <div class="nav-links">
-                <span class="nav-pill active">Explorer</span>
-                <span class="nav-pill">About</span>
+                <span class="nav-pill active" onclick="showExplorer()">Explorer</span>
+                <span class="nav-pill" onclick="showAbout()">About</span>
             </div>
         </div>
     </nav>
@@ -193,6 +193,77 @@
             </div>
             <div id="language-grid" class="card-grid"></div>
         </section>
+    </div>
+
+    <!-- About Modal -->
+    <div id="about-modal" class="modal hidden">
+        <div class="modal-overlay" onclick="hideAbout()"></div>
+        <div class="modal-content">
+            <button class="modal-close" onclick="hideAbout()">&times;</button>
+            <div class="modal-header">
+                <svg width="32" height="32" viewBox="0 0 28 28" fill="none">
+                    <circle cx="14" cy="14" r="12" stroke="url(#mGrad)" stroke-width="2.5"/>
+                    <circle cx="14" cy="8" r="3" fill="url(#mGrad)"/>
+                    <circle cx="8" cy="18" r="2.5" fill="url(#mGrad)"/>
+                    <circle cx="20" cy="18" r="2.5" fill="url(#mGrad)"/>
+                    <line x1="14" y1="10.5" x2="8.5" y2="16" stroke="url(#mGrad)" stroke-width="1.5" stroke-linecap="round"/>
+                    <line x1="14" y1="10.5" x2="19.5" y2="16" stroke="url(#mGrad)" stroke-width="1.5" stroke-linecap="round"/>
+                    <defs><linearGradient id="mGrad" x1="0" y1="0" x2="28" y2="28"><stop offset="0%" stop-color="#f58529"/><stop offset="50%" stop-color="#dd2a7b"/><stop offset="100%" stop-color="#8134af"/></linearGradient></defs>
+                </svg>
+                <h2>DevGraph</h2>
+                <p class="modal-tagline">GitHub Developer Network Explorer</p>
+            </div>
+
+            <div class="modal-section">
+                <h3>What is DevGraph?</h3>
+                <p>DevGraph maps the hidden social graph between GitHub developers using a graph database. Search any GitHub username to discover their direct followers, second-degree connections (followers of followers), and language-based networks.</p>
+            </div>
+
+            <div class="modal-section">
+                <h3>Why a Graph Database?</h3>
+                <p>Traditional SQL databases require expensive JOIN operations for multi-hop queries. Neo4j traverses relationships natively, making 2-hop and 3-hop queries fast and natural. Social networks are graphs -- modeling them as graphs is the right choice.</p>
+            </div>
+
+            <div class="modal-section">
+                <h3>Features</h3>
+                <ul class="modal-list">
+                    <li><strong>1-hop:</strong> Direct followers ranked by follower count</li>\                    <li><strong>2-hop:</strong> Followers of followers with mutual connection count</li>
+                    <li><strong>Language Network:</strong> Developers who share programming languages</li>
+                    <li><strong>Auto-loading:</strong> Searches automatically build network data</li>
+                    <li><strong>Mutual Members:</strong> See exactly who connects you to 2nd-degree contacts</li>
+                </ul>
+            </div>
+
+            <div class="modal-section">
+                <h3>Tech Stack</h3>
+                <div class="modal-tags">
+                    <span class="tag tag-lang">Python 3.11</span>
+                    <span class="tag tag-lang">Flask</span>
+                    <span class="tag tag-lang">Neo4j / CognoDB</span>
+                    <span class="tag tag-lang">Vanilla JS</span>
+                    <span class="tag tag-lang">HTML/CSS</span>
+                    <span class="tag tag-lang">GitHub API</span>
+                    <span class="tag tag-lang">Render.com</span>
+                </div>
+            </div>
+
+            <div class="modal-section">
+                <h3>API Endpoints</h3>
+                <div class="modal-api-list">
+                    <div class="api-item"><code>GET /api/health</code><span>Health check</span></div>
+                    <div class="api-item"><code>GET /api/developer/:username</code><span>Developer profile</span></div>
+                    <div class="api-item"><code>GET /api/followers/:username</code><span>Direct followers (1-hop)</span></div>
+                    <div class="api-item"><code>GET /api/second-degree/:username</code><span>2nd-degree connections</span></div>
+                    <div class="api-item"><code>GET /api/language-network/:username</code><span>Shared language network</span></div>
+                    <div class="api-item"><code>GET /api/network-stats/:username</code><span>Aggregated stats</span></div>
+                </div>
+            </div>
+
+            <div class="modal-section modal-footer-info">
+                <p>Built as a <strong>Wexa AI Take-Home Assignment</strong> submission</p>
+                <p>Source: <a href="https://github.com/ACprime4385/graph-app" target="_blank">github.com/ACprime4385/graph-app</a></p>
+            </div>
+        </div>
     </div>
 
     <!-- Footer -->

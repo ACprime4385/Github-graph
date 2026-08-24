@@ -173,12 +173,32 @@ function escapeHtml(text) {
 }
 
 // ---- Event Listeners ----
+function showAbout() {
+    document.getElementById('about-modal').classList.remove('hidden');
+    document.querySelectorAll('.nav-pill').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-pill')[1].classList.add('active');
+}
+
+function hideAbout() {
+    document.getElementById('about-modal').classList.add('hidden');
+    document.querySelectorAll('.nav-pill').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-pill')[0].classList.add('active');
+}
+
+function showExplorer() {
+    hideAbout();
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     const input = document.getElementById('username');
     input.addEventListener('keydown', function (e) {
         if (e.key === 'Enter') searchDeveloper();
     });
     document.getElementById('search-btn').addEventListener('click', searchDeveloper);
-    // Focus search on load
     input.focus();
+
+    // Close modal on Escape
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') hideAbout();
+    });
 });
