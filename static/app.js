@@ -107,6 +107,12 @@ function renderSecondDegree(results) {
             <div class="dev-card-meta">
                 <span class="tag tag-mutual">✨ ${r.mutual_connections} mutual</span>
             </div>
+            ${r.mutual_members && r.mutual_members.length > 0 ? `
+                <div class="dev-card-mutual">
+                    <span class="mutual-label">via:</span>
+                    ${r.mutual_members.map(m => `<span class="tag tag-lang">@${escapeHtml(m)}</span>`).join(' ')}
+                </div>
+            ` : ''}
         </div>
     `).join('');
 }

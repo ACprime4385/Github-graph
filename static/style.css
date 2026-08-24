@@ -645,6 +645,24 @@ button { font-family: inherit; }
 
 .dev-card-link:hover { gap: 8px; }
 
+.dev-card-mutual {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--border-light);
+}
+
+.mutual-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
 /* ---- Tags ---- */
 .tag {
     display: inline-flex;

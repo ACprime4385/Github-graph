@@ -66,6 +66,9 @@ class GitHubLoader:
             # Fetch and load repositories + languages
             self._load_repositories(username)
 
+            # Load followers' followers for 2nd-degree connections
+            self._load_second_degree(username)
+
             logger.info(f"Loaded {username}")
             return True
 
@@ -176,6 +179,43 @@ class GitHubLoader:
 
         except Exception as e:
             logger.error(f"Error loading repos: {e}")
+
+    def _load_second_degree(self, username, max_followers=5):
+        """Load followers of followers for 2nd-degree connections.
+        Limits to top N followers to control API usage."""
+        try:
+            # Get the user's followers from DB
+            followers = db.query("""
+                MATCH (f:Developer)-[:FOLLOWS]->(d:Developer {username: $username})
+                RETURN f.username AS username
+                LIMIT $limit
+            """, username=username, limit=max_followers)
+
+            if not followers:
+                return
+
+            count = 0
+            for f in followers:
+                fname = f['username']
+                # Skip if already loaded with followers
+                existing = db.query("""
+                    MATCH (f:Developer {username: $fname})<-[:FOLLOWS]-(:Developer)
+                    RETURN count(*) AS cnt
+                """, fname=fname)
+
+                if existing and existing[0]['cnt'] > 0:
+                    continue  # Already has follower data
+
+                self._load_followers(fname)
+                count += 1
+                import time
+                time.sleep(1)  # Rate limit protection
+
+            if count > 0:
+                logger.info(f"Loaded 2nd-degree data for {count} followers of {username}")
+
+        except Exception as e:
+            logger.error(f"Error loading 2nd-degree: {e}")
 
     def create_indexes(self):
         """Create database indexes for performance"""
