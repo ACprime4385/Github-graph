@@ -182,9 +182,8 @@ def get_second_degree(username):
               <-[:FOLLOWS]-(follower:Developer)
               <-[:FOLLOWS]-(friend:Developer)
         WHERE me.username <> friend.username
-          AND NOT (friend)-[:FOLLOWS]->(me)
         RETURN DISTINCT friend.username AS username,
-               COUNT(*) AS mutual_connections
+               COUNT(DISTINCT follower) AS mutual_connections
         ORDER BY mutual_connections DESC
         LIMIT $limit
     """, username=username, limit=limit)
