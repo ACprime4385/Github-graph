@@ -103,10 +103,16 @@ def get_developer(username):
                d.profile_url AS profile_url
     """, username=username)
 
+    # Check if profile is complete (has followers data)
+    needs_fetch = False
     if result and result[0]:
-        return jsonify(result[0]), 200
+        dev = result[0]
+        if dev.get('followers') is None or dev.get('name') is None:
+            needs_fetch = True  # Incomplete profile, re-fetch from GitHub
+        else:
+            return jsonify(dev), 200
 
-    # If not in DB, fetch from GitHub
+    # Fetch from GitHub (new user or incomplete profile)
     try:
         loader = GitHubLoader()
         if not loader.load_user(username):
