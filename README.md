@@ -6,6 +6,8 @@
 **Live Demo:** [https://devgraph.onrender.com](https://devgraph.onrender.com)
 *(Deployed on Render.com free tier)*
 
+**Demo Video:** [`docs/demo-recording`](.) — see [Deliverables note](#deliverables-note) below.
+
 ---
 
 ## Table of Contents
@@ -169,7 +171,7 @@ CREATE INDEX repo_name IF NOT EXISTS
 
 ### Creating a CognoDB Instance
 
-1. Sign up at [cognodb.cloud](https://cognodb.cloud)
+1. Sign up at [console.cognodb.com/signup](https://console.cognodb.com/signup)
 2. Create a new database instance (free c0 tier)
 3. Note down:
    - **URI:** `bolt+s://<instance-id>.databases.cognodb.cloud`
@@ -400,7 +402,10 @@ graph-app/
 │   ├── style.css            # Instagram-inspired theme
 │   └── app.js               # Frontend logic
 ├── scripts/
-│   └── seed_data.py         # CLI data loader
+│   ├── seed_data.py         # CLI data loader (seed specific users)
+│   └── build_network.py     # Builds a 2-level demo network for 2nd-degree queries
+├── docs/
+│   └── screenshots/         # UI screenshots used in this README
 ├── tests/
 │   └── test_api.py          # API validation tests
 ├── .env.example             # Credential template
@@ -418,14 +423,20 @@ graph-app/
 ### Search Interface
 The app opens with a clean, Instagram-inspired search interface with animated gradient background.
 
-### Profile Card
+![Search Interface](docs/screenshots/search.png)
+
+### Profile & Network Results
 After searching, a profile card displays with the developer's stats: followers, direct connections, 2nd-degree reach, and language count.
+
+![Profile Results](docs/screenshots/profile-results.png)
 
 ### Network Grids
 Three card grids display:
 1. **Direct Followers** — ranked by follower count
-2. **Second-Degree Connections** — ranked by mutual connections
+2. **Second-Degree Connections** — ranked by mutual connections (with the mutual followers who link them)
 3. **Language Network** — ranked by shared languages
+
+![Network Grids](docs/screenshots/network-grids.png)
 
 ### Loading State
 A triple-ring animation displays while data is being fetched.
@@ -450,6 +461,11 @@ When no data is available (new developer, no connections yet), a friendly empty 
 | Fonts | Plus Jakarta Sans + Space Grotesk | Premium typography |
 
 ---
+
+## Deliverables Note
+
+- **Hosted demo:** https://devgraph.onrender.com (Render.com free tier)
+- **Screen recording:** a short walkthrough video of searching a developer and exploring their network should be added at `docs/demo-recording.mp4` before submission (record with any screen recorder, e.g. OBS or the Windows/Game Bar recorder `Win+G`).
 
 ## License
 
