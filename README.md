@@ -3,10 +3,8 @@
 > **Wexa AI Take-Home Assignment Submission**
 > A full-stack web application that maps the hidden social graph between GitHub developers using a graph database.
 
-**Live Demo:** [https://devgraph.onrender.com](https://devgraph.onrender.com)
+**Live Demo:** [https://devgraph-z49t.onrender.com/](https://devgraph-z49t.onrender.com/)
 *(Deployed on Render.com free tier)*
-
-**Demo Video:** [`docs/demo-recording`](.) — see [Deliverables note](#deliverables-note) below.
 
 ---
 
@@ -464,8 +462,7 @@ When no data is available (new developer, no connections yet), a friendly empty 
 
 ## Deliverables Note
 
-- **Hosted demo:** https://devgraph.onrender.com (Render.com free tier)
-- **Screen recording:** a short walkthrough video of searching a developer and exploring their network should be added at `docs/demo-recording.mp4` before submission (record with any screen recorder, e.g. OBS or the Windows/Game Bar recorder `Win+G`).
+- **Hosted demo:** https://devgraph-z49t.onrender.com (Render.com free tier)
 
 ## License
 
